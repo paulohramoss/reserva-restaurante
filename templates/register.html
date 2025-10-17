@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Criar conta - Reserva Fácil{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h1 class="h3 mb-4 text-center">Crie sua conta</h1>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label">{{ form.name.label }}</label>
+            {{ form.name(class_='form-control', placeholder='Seu nome completo') }}
+            {% for error in form.name.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ form.email.label }}</label>
+            {{ form.email(class_='form-control', placeholder='seuemail@exemplo.com') }}
+            {% for error in form.email.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="form-label">{{ form.password.label }}</label>
+              {{ form.password(class_='form-control', placeholder='Crie uma senha') }}
+              {% for error in form.password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">{{ form.confirm_password.label }}</label>
+              {{ form.confirm_password(class_='form-control', placeholder='Repita a senha') }}
+              {% for error in form.confirm_password.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+            </div>
+          </div>
+          <div class="mb-3 mt-3">
+            <label class="form-label">{{ form.role.label }}</label>
+            {{ form.role(class_='form-select') }}
+          </div>
+          <div class="mb-3" id="manager-code-field">
+            <label class="form-label">{{ form.manager_code.label }}</label>
+            {{ form.manager_code(class_='form-control', placeholder='Informe o código se for gestor') }}
+            <div class="form-text">{{ form.manager_code.description }}</div>
+            {% for error in form.manager_code.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Criar conta</button>
+          </div>
+        </form>
+        <p class="text-center mt-3 mb-0">Já possui cadastro? <a href="{{ url_for('login') }}">Faça login.</a></p>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const roleField = document.querySelector('#{{ form.role.id }}');
+  const managerCodeField = document.querySelector('#manager-code-field');
+
+  function toggleManagerCode() {
+    if (roleField.value === 'manager') {
+      managerCodeField.style.display = 'block';
+    } else {
+      managerCodeField.style.display = 'none';
+    }
+  }
+
+  toggleManagerCode();
+  roleField.addEventListener('change', toggleManagerCode);
+</script>
+{% endblock %}

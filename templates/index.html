@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %}Reserva Fácil - Bem-vindo{% endblock %}
+{% block content %}
+<section class="row align-items-center g-4">
+  <div class="col-lg-6">
+    <h1 class="display-5 fw-bold text-primary">Simplifique as reservas do seu restaurante</h1>
+    <p class="lead">O Reserva Fácil oferece uma experiência intuitiva para clientes realizarem reservas e para gestores acompanharem o movimento do restaurante em tempo real.</p>
+    <div class="d-flex flex-wrap gap-3">
+      <a class="btn btn-primary btn-lg" href="{{ url_for('register') }}">Criar conta gratuita</a>
+      <a class="btn btn-outline-primary btn-lg" href="{{ url_for('login') }}">Entrar</a>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h2 class="h4 mb-3">Como funciona?</h2>
+        <ul class="list-unstyled">
+          <li class="mb-2"><span class="badge text-bg-primary me-2">1</span> Clientes criam uma conta e informam a data, horário e número de pessoas.</li>
+          <li class="mb-2"><span class="badge text-bg-primary me-2">2</span> Reservas ficam disponíveis imediatamente no painel exclusivo do gestor.</li>
+          <li class="mb-2"><span class="badge text-bg-primary me-2">3</span> O gestor acompanha o volume de reservas por data e organiza o salão com antecedência.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row mt-5 g-4">
+  <div class="col-md-4">
+    <div class="feature-card h-100">
+      <h3 class="h5">Painel do Gestor</h3>
+      <p>Visualize todas as reservas do dia em um só lugar e filtre por data quando necessário.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-card h-100">
+      <h3 class="h5">Reservas em segundos</h3>
+      <p>Formulário simples e responsivo para seus clientes agendarem uma visita em qualquer dispositivo.</p>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="feature-card h-100">
+      <h3 class="h5">Histórico completo</h3>
+      <p>Clientes acompanham todas as reservas confirmadas e mantêm as informações organizadas.</p>
+    </div>
+  </div>
+</section>
+{% endblock %}
