@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Minhas reservas - Reserva Fácil{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h1 class="h3 mb-0">Minhas reservas</h1>
+      <a href="{{ url_for('reserve') }}" class="btn btn-primary">Nova reserva</a>
+    </div>
+    {% if reservations %}
+      <div class="list-group">
+        {% for reservation in reservations %}
+          <div class="list-group-item list-group-item-action py-3">
+            <div class="d-flex w-100 justify-content-between">
+              <h2 class="h5 mb-1">{{ reservation.reservation_date.strftime('%d/%m/%Y') }} às {{ reservation.reservation_time.strftime('%H:%M') }}</h2>
+              <span class="badge text-bg-primary">{{ reservation.guests }} pessoa{{ 's' if reservation.guests > 1 else '' }}</span>
+            </div>
+            {% if reservation.notes %}
+              <p class="mb-1 text-muted">Observações: {{ reservation.notes }}</p>
+            {% endif %}
+            <small class="text-muted">Reserva realizada em {{ reservation.created_at.strftime('%d/%m/%Y %H:%M') }}</small>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="alert alert-info">Você ainda não possui reservas. Clique em "Nova reserva" para garantir seu lugar.</div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

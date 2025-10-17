@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}Nova reserva - Reserva Fácil{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h1 class="h3 mb-4 text-center">Faça sua reserva</h1>
+        <form method="post" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            <label class="form-label">{{ form.reservation_date.label }}</label>
+            {{ form.reservation_date(class_='form-control', type='date') }}
+            {% for error in form.reservation_date.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ form.reservation_time.label }}</label>
+            {{ form.reservation_time(class_='form-control', type='time') }}
+            {% for error in form.reservation_time.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="mb-3">
+            <label class="form-label">{{ form.guests.label }}</label>
+            {{ form.guests(class_='form-control', min=1, max=20) }}
+            <div class="form-text">Aceitamos reservas para até 20 pessoas via sistema. Para grupos maiores, entre em contato com o restaurante.</div>
+            {% for error in form.guests.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="mb-4">
+            <label class="form-label">{{ form.notes.label }}</label>
+            {{ form.notes(class_='form-control', rows=3, placeholder='Informações adicionais, alergias ou solicitações especiais') }}
+            {% for error in form.notes.errors %}<div class="text-danger small">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="d-grid">
+            <button type="submit" class="btn btn-primary btn-lg">Confirmar reserva</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
