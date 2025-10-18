@@ -30,6 +30,7 @@ MANAGER_ACCESS_CODE = "GESTOR2024"
 
 db = SQLAlchemy()
 login_manager = LoginManager()
+# type: ignore[reportAttributeAccessIssue]
 login_manager.login_view = "login"
 
 
@@ -84,7 +85,7 @@ class RegistrationForm(FlaskForm):
     )
 
     def validate_email(self, field: StringField) -> None:  # type: ignore[override]
-        if User.query.filter_by(email=field.data.lower()).first():
+        if User.query.filter_by(email=field.data.lower() if field.data else "").first():
             raise ValidationError("Este e-mail já está cadastrado.")
 
     def validate_manager_code(self, field: StringField) -> None:  # type: ignore[override]
@@ -109,7 +110,7 @@ class ReservationForm(FlaskForm):
     notes = TextAreaField("Observações", validators=[Length(max=500)])
 
     def validate_reservation_date(self, field: DateField) -> None:  # type: ignore[override]
-        if field.data < date.today():
+        if field.data and field.data < date.today():
             raise ValidationError("A data da reserva não pode ser no passado.")
 
 
@@ -146,12 +147,11 @@ def register_routes(app: Flask) -> None:
 
         form = RegistrationForm()
         if form.validate_on_submit():
-            user = User(
-                name=form.name.data.strip(),
-                email=form.email.data.lower(),
-                role=form.role.data,
-            )
-            user.set_password(form.password.data)
+            user = User()
+            user.name = form.name.data.strip() if form.name.data else ""
+            user.email = form.email.data.lower() if form.email.data else ""
+            user.role = form.role.data if form.role.data else "customer"
+            user.set_password(form.password.data or "")
             db.session.add(user)
             db.session.commit()
             flash("Cadastro realizado com sucesso!", "success")
@@ -165,7 +165,10 @@ def register_routes(app: Flask) -> None:
 
         form = LoginForm()
         if form.validate_on_submit():
-            user = User.query.filter_by(email=form.email.data.lower(), role=form.role.data).first()
+            user = User.query.filter_by(
+                email=form.email.data.lower() if form.email.data else "",
+                role=form.role.data
+            ).first()
             if user and user.check_password(form.password.data):
                 login_user(user)
                 flash("Login realizado com sucesso!", "success")
@@ -194,13 +197,12 @@ def register_routes(app: Flask) -> None:
 
         form = ReservationForm()
         if form.validate_on_submit():
-            reservation = Reservation(
-                user=current_user,
-                reservation_date=form.reservation_date.data,
-                reservation_time=form.reservation_time.data,
-                guests=form.guests.data,
-                notes=form.notes.data,
-            )
+            reservation = Reservation()
+            reservation.user_id = current_user.id
+            reservation.reservation_date = form.reservation_date.data
+            reservation.reservation_time = form.reservation_time.data
+            reservation.guests = form.guests.data
+            reservation.notes = form.notes.data
             db.session.add(reservation)
             db.session.commit()
             flash("Reserva realizada com sucesso!", "success")
